@@ -23,6 +23,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#define ETH_TYPE (0x0801)
-#define NDNLOWPAN_H_TYPE (0x80)
+#define ETH_TYPE                        (0x0801)
+#define NDNLOWPAN_H_TYPE                (1 << 7)
+#define NDNLOWPAN_H_MINSUFFIX           (1 << 6)
+#define NDNLOWPAN_H_MAXSUFFIX           (1 << 5)
+#define NDNLOWPAN_H_PUBLISHERPUBKEY     (1 << 4)
+#define NDNLOWPAN_H_EXCLUDE             (1 << 3)
+#define NDNLOWPAN_H_CHILD               (1 << 2)
+#define NDNLOWPAN_H_MUSTBEFRESH         (1 << 1)
+#define NDNLOWPAN_H_INTLIFETIME         (1 << 0)
 

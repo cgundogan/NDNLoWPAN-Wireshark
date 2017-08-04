@@ -31,6 +31,13 @@
 static int proto_ndnlowpan = -1;
 static int hf_ndnlowpan_H = -1;
 static int hf_ndnlowpan_H_flag_type = -1;
+static int hf_ndnlowpan_H_flag_minSuffix = -1;
+static int hf_ndnlowpan_H_flag_maxSuffix = -1;
+static int hf_ndnlowpan_H_flag_publisherpubkey = -1;
+static int hf_ndnlowpan_H_flag_exclude = -1;
+static int hf_ndnlowpan_H_flag_child = -1;
+static int hf_ndnlowpan_H_flag_mustbefresh = -1;
+static int hf_ndnlowpan_H_flag_intlifetime = -1;
 static gint ett_ndnlowpan = -1;
 static gint ett_ndnlowpan_H_flags = -1;
 
@@ -39,7 +46,6 @@ static const value_string ndnlowpan_H_type_names[] = {
     { 1, "Data" },
     { 3, NULL }
 };
-
 
 void
 proto_register_ndnlowpan(void)
@@ -61,6 +67,48 @@ proto_register_ndnlowpan(void)
             { "Packet Type", "ndnlowpan.H.type",
             FT_BOOLEAN, 8,
             VALS(ndnlowpan_H_type_names), NDNLOWPAN_H_TYPE,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_minSuffix,
+            { "MinSuffixComponent (Selector)", "ndnlowpan.H.minsuffix",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_MINSUFFIX,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_maxSuffix,
+            { "MaxSuffixComponent (Selector)", "ndnlowpan.H.maxsuffix",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_MAXSUFFIX,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_publisherpubkey,
+            { "PublisherPubKey (Selector)", "ndnlowpan.H.publisherpubkey",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_PUBLISHERPUBKEY,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_exclude,
+            { "Exclude (Selector)", "ndnlowpan.H.exclude",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_EXCLUDE,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_child,
+            { "Child (Selector)", "ndnlowpan.H.child",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_CHILD,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_mustbefresh,
+            { "Must Be Fresh (Qualifier)", "ndnlowpan.H.mustbefresh",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_MUSTBEFRESH,
+            NULL, HFILL }
+        },
+	{ &hf_ndnlowpan_H_flag_intlifetime,
+            { "Interest Lifetime (Qualifier)", "ndnlowpan.H.intlifetime",
+            FT_BOOLEAN, 8,
+            TFS(&tfs_present_absent), NDNLOWPAN_H_INTLIFETIME,
             NULL, HFILL }
         }
     };
@@ -87,23 +135,21 @@ dissect_ndnlowpan(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void 
 
     proto_tree *ndnlowpan_tree = proto_item_add_subtree(ti, ett_ndnlowpan);
 
-    static const int * ndnlowpan_H_type_flags[] = {
-	&hf_ndnlowpan_H_flag_type,
-	NULL
-    };
-
-    (void) ndnlowpan_H_type_flags;
-
     proto_tree *ndnlowpan_H_tree;
     gint offset = 0;
-    //proto_tree_add_bitmask(ndnlowpan_tree, tvb, offset, hf_ndnlowpan_H, ett_ndnlowpan_H_flags, ndnlowpan_H_type_flags, ENC_BIG_ENDIAN);
     ti = proto_tree_add_item(ndnlowpan_tree, hf_ndnlowpan_H, tvb, offset, 1, ENC_BIG_ENDIAN);
     ndnlowpan_H_tree = proto_item_add_subtree(ti, ett_ndnlowpan_H_flags);
     proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_type, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_minSuffix, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_maxSuffix, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_publisherpubkey, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_exclude, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_child, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_mustbefresh, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_intlifetime, tvb, offset, 1, ENC_BIG_ENDIAN);
     offset += 1;
 
     return tvb_captured_length(tvb);
-    //return offset;
 }
 
 void
