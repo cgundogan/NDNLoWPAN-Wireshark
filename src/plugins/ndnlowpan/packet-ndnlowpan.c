@@ -60,7 +60,7 @@ proto_register_ndnlowpan(void)
 	{ &hf_ndnlowpan_H,
             { "NDNLoWPAN Compression Header", "ndnlowpan.H",
             FT_UINT8, BASE_HEX,
-            NULL, 0x0,
+            NULL, 0,
             NULL, HFILL }
         },
 	{ &hf_ndnlowpan_H_flag_type,
@@ -131,22 +131,24 @@ dissect_ndnlowpan(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void 
     col_clear(pinfo->cinfo,COL_INFO);
 
 
+    static const int *ndnlowpan_H_flags[] = {
+        &hf_ndnlowpan_H_flag_type,
+        &hf_ndnlowpan_H_flag_minSuffix,
+        &hf_ndnlowpan_H_flag_maxSuffix,
+        &hf_ndnlowpan_H_flag_publisherpubkey,
+        &hf_ndnlowpan_H_flag_exclude,
+        &hf_ndnlowpan_H_flag_child,
+        &hf_ndnlowpan_H_flag_mustbefresh,
+        &hf_ndnlowpan_H_flag_intlifetime,
+        NULL
+    };
+
     proto_item *ti = proto_tree_add_item(tree, proto_ndnlowpan, tvb, 0, -1, ENC_NA);
 
     proto_tree *ndnlowpan_tree = proto_item_add_subtree(ti, ett_ndnlowpan);
 
-    proto_tree *ndnlowpan_H_tree;
     gint offset = 0;
-    ti = proto_tree_add_item(ndnlowpan_tree, hf_ndnlowpan_H, tvb, offset, 1, ENC_BIG_ENDIAN);
-    ndnlowpan_H_tree = proto_item_add_subtree(ti, ett_ndnlowpan_H_flags);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_type, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_minSuffix, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_maxSuffix, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_publisherpubkey, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_exclude, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_child, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_mustbefresh, tvb, offset, 1, ENC_BIG_ENDIAN);
-    proto_tree_add_item(ndnlowpan_H_tree, hf_ndnlowpan_H_flag_intlifetime, tvb, offset, 1, ENC_BIG_ENDIAN);
+    proto_tree_add_bitmask_len(ndnlowpan_tree, tvb, offset, 1, hf_ndnlowpan_H, ett_ndnlowpan_H_flags, ndnlowpan_H_flags, NULL, ENC_NA);
     offset += 1;
 
     return tvb_captured_length(tvb);

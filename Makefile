@@ -13,10 +13,15 @@ build: $(WIRESHARK_SRC)/plugins/ndnlowpan/.libs/ndnlowpan.so
 
 wireshark:
 	git clone --depth=1 https://code.wireshark.org/review/wireshark
+	rsync -a src/ $(WIRESHARK_SRC)
+	cd $(WIRESHARK_SRC) && ./autogen.sh && ./configure
 
 $(WIRESHARK_SRC)/plugins/ndnlowpan/.libs/ndnlowpan.so: wireshark
 	rsync -a src/ $(WIRESHARK_SRC)
-	cd $(WIRESHARK_SRC) && ./autogen.sh && ./configure && make
+	cd $(WIRESHARK_SRC) && make
 
 clean::
+	$(RM) -rf $(WIRESHARK_SRC)/plugins/ndnlowpan/.libs/ndnlowpan.so
+
+distclean::
 	$(RM) -rf $(WIRESHARK_SRC)
