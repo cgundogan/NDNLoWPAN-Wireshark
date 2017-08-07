@@ -100,13 +100,13 @@ proto_register_ndnlowpan(void)
             NULL, HFILL }
         },
 	{ &hf_ndnlowpan_H_flag_mustbefresh,
-            { "Must Be Fresh (Qualifier)", "ndnlowpan.H.mustbefresh",
+            { "Must Be Fresh (Selector)", "ndnlowpan.H.mustbefresh",
             FT_BOOLEAN, 8,
             TFS(&tfs_present_absent), NDNLOWPAN_H_MUSTBEFRESH,
             NULL, HFILL }
         },
 	{ &hf_ndnlowpan_H_flag_intlifetime,
-            { "Interest Lifetime (Qualifier)", "ndnlowpan.H.intlifetime",
+            { "Interest Lifetime (Guider)", "ndnlowpan.H.intlifetime",
             FT_BOOLEAN, 8,
             TFS(&tfs_present_absent), NDNLOWPAN_H_INTLIFETIME,
             NULL, HFILL }
