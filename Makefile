@@ -12,13 +12,13 @@ all: build
 build: $(WIRESHARK_SRC)/plugins/ndnlowpan/.libs/ndnlowpan.so
 
 wireshark:
-	git clone --depth=1 https://code.wireshark.org/review/wireshark
+	[[ -d "wireshark" ]] || git clone --depth=1 https://code.wireshark.org/review/wireshark
 	rsync -a src/ $(WIRESHARK_SRC)
 	cd $(WIRESHARK_SRC) && ./autogen.sh && ./configure
 
 $(WIRESHARK_SRC)/plugins/ndnlowpan/.libs/ndnlowpan.so: wireshark
 	rsync -a src/ $(WIRESHARK_SRC)
-	cd $(WIRESHARK_SRC) && make
+	cd $(WIRESHARK_SRC) && $(MAKE)
 
 clean::
 	$(RM) -rf $(WIRESHARK_SRC)/plugins/ndnlowpan/.libs/ndnlowpan.so
