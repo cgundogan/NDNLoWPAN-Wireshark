@@ -41,10 +41,9 @@ static int hf_ndnlowpan_H_flag_intlifetime = -1;
 static gint ett_ndnlowpan = -1;
 static gint ett_ndnlowpan_H_flags = -1;
 
-static const value_string ndnlowpan_H_type_names[] = {
-    { 0, "Interest" },
-    { 1, "Data" },
-    { 3, NULL }
+static const true_false_string ndnlowpan_H_type_names = {
+    "Data",
+    "Interest"
 };
 
 void
@@ -66,7 +65,7 @@ proto_register_ndnlowpan(void)
 	{ &hf_ndnlowpan_H_flag_type,
             { "Packet Type", "ndnlowpan.H.type",
             FT_BOOLEAN, 8,
-            VALS(ndnlowpan_H_type_names), NDNLOWPAN_H_TYPE,
+            TFS(&ndnlowpan_H_type_names), NDNLOWPAN_H_TYPE,
             NULL, HFILL }
         },
 	{ &hf_ndnlowpan_H_flag_minSuffix,
